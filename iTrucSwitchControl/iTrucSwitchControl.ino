@@ -10,6 +10,9 @@
 #include "HIDKeyboardTypes.h"
 #include <string>
 
+#define SW_PIN 19
+#define KEY "J"
+
 
 static BLEHIDDevice* hid;
 BLECharacteristic* input;
@@ -45,6 +48,9 @@ class MyCallbacks : public BLEServerCallbacks {
 void setup() {
 	Serial.begin(115200);
 	Serial.println("iOS Switch Control");
+
+	/* init hardware for button */
+	pinMode (SW_PIN, INPUT_PULLUP);
 
 	BLEDevice::init("iOS_SC");
 	BLEServer *pServer = BLEDevice::createServer();
@@ -109,7 +115,7 @@ void setup() {
 		USAGE_PAGE(1),      0x07,       //   Kbrd/Keypad
 		USAGE_MINIMUM(1),   0x00,
 		USAGE_MAXIMUM(1),   0x65,
-		HIDINPUT(1),           0x00,       //   Data,Array,Abs,No Wrap,Linear,Preferred State,No Null Position
+		HIDINPUT(1),        0x00,       //   Data,Array,Abs,No Wrap,Linear,Preferred State,No Null Position
 		END_COLLECTION(0)
 	};
 
@@ -142,8 +148,12 @@ void setup() {
 
 }
 
+/** send a string as keycode events
+ * @param[in] str the string (null terminated)
+ */
 void sendStr (const char* str) {
-	Serial.println("sendStr...");
+// 	Serial.printf("sendStr(%s)\n", str);
+	Serial.println("sendStr");
 	while(*str) {
 		KEYMAP map = keymap[(uint8_t)*str];
 		/*
@@ -164,9 +174,11 @@ void sendStr (const char* str) {
 }
 
 void loop() {
-	delay(5000);
-	if (connected == 1) {
-		sendStr ("Hello, World!\n");
-		delay(2000);
+	uint8_t pressed = HIGH;
+
+	pressed = digitalRead (SW_PIN);
+	if (pressed == LOW && connected == 1) {
+		sendStr (KEY);
 	}
+	delay(150);
 }
