@@ -4,6 +4,7 @@ It uses the  [Switch Control accessibility](https://support.apple.com/en-us/HT20
 
 # Hardware
 * a Wemos LoLin32 (esp32 based board)
+* a push button
 
 # Firmware
 
@@ -17,9 +18,10 @@ Based on SampleHIDKeyboard by chegewara
 # Bibliography
 * http://forum.fablab-lannion.org/viewtopic.php?f=5&p=5236
 * http://atmakers.org/2016/10/ios-switch-control-on-a-budget-using-bluetooth-kbd/
+* https://www.youtube.com/watch?v=e4SYzTAFT4s
 
 # TODO
-* 1 or more input button
+* more input buttons ?
 * French keyboard
 * configurable keycode (Serial itf?)
 * deepsleep ?
